@@ -4,35 +4,50 @@ part 'bluetooth_print_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class BluetoothDevice {
-  BluetoothDevice();
+  BluetoothDevice({
+    this.name,
+    required this.address,
+    this.type = 0,
+    this.connected = false,
+  });
 
   String? name;
   String? address;
   int? type = 0;
   bool? connected = false;
 
-  factory BluetoothDevice.fromJson(Map<String, dynamic> json) =>
-      _$BluetoothDeviceFromJson(json);
+  factory BluetoothDevice.fromJson(Map<String, dynamic> json) => _$BluetoothDeviceFromJson(json);
+
   Map<String, dynamic> toJson() => _$BluetoothDeviceToJson(this);
+
+  factory BluetoothDevice.fromMap(Map map) {
+    return BluetoothDevice(
+      name: map["name"],
+      address: map["address"]!,
+      type: map["type"],
+      connected: map["isConnected"] ?? false,
+    );
+  }
 }
 
 @JsonSerializable(includeIfNull: false)
 class LineText {
-  LineText(
-      {this.type, //text,barcode,qrcode,image(base64 string)
-      this.content,
-      this.size = 0,
-      this.align = ALIGN_LEFT,
-      this.weight = 0, //0,1
-      this.width = 0, //0,1
-      this.height = 0, //0,1
-      this.absolutePos = 0,
-      this.relativePos = 0,
-      this.fontZoom = 1,
-      this.underline = 0, //0,1
-      this.linefeed = 0, //0,1
-      this.x = 0,
-      this.y = 0});
+  LineText({
+    this.type, //text,barcode,qrcode,image(base64 string)
+    this.content,
+    this.size = 0,
+    this.align = 0, //ALIGN_LEFT
+    this.weight = 0, //0,1
+    this.width = 0, //0,1
+    this.height = 0, //0,1
+    this.absolutePos = 0,
+    this.relativePos = 0,
+    this.fontZoom = 1,
+    this.underline = 0, //0,1
+    this.linefeed = 0, //0,1
+    this.x = 0,
+    this.y = 0,
+  });
 
   static const String TYPE_TEXT = 'text';
   static const String TYPE_BARCODE = 'barcode';
@@ -77,7 +92,7 @@ class LineText {
   final int? x;
   final int? y;
 
-  factory LineText.fromJson(Map<String, dynamic> json) =>
-      _$LineTextFromJson(json);
+  factory LineText.fromJson(Map<String, dynamic> json) => _$LineTextFromJson(json);
+
   Map<String, dynamic> toJson() => _$LineTextToJson(this);
 }
